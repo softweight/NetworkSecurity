@@ -37,6 +37,22 @@ def in_walsh_transform(ipt):
         opt.append(round_val)
     return opt
 
+def tree_encryption(x):
+
+    s_box = [3, 2, 4, 1, 6, 5, 7, 0]
+
+    y = bytearray([x[s_box[i]] for i in range(8)])
+
+    return y
+    
+def tree_decryption(x):
+
+    s_box = [7, 3, 1, 0, 2, 5, 4, 6]
+
+    y = bytearray([x[s_box[i]] for i in range(8)])
+
+    return y
+
 def block_encryption(m, k):
     for round_k in k:
         # print("=====begin round=====")
@@ -47,7 +63,9 @@ def block_encryption(m, k):
         m = walsh_transform(m)
         # print("after walsh:", end='')
         # print(m)
-        m = bytearray([(m[i] + round_k[i]) % modular for i in range(8)])
+        m = bytearray([(m[i] + round_k[i]) % modular for i in range(8)])    #xor
+
+        m = tree_encryption(m)
         # print("after xor:", end='')
         # print(m)
         # print("=====end round=====")
@@ -61,6 +79,7 @@ def block_decryption(m, k):
         # print(round_k)
         # print("original m:", end='')
         # print(m)
+        m = tree_decryption(m)
         m = bytearray([(m[i] - round_k[i]) % modular for i in range(8)])
         # print("after xor:", end='')
         # print(m)
@@ -147,6 +166,11 @@ def randomString(stringLength=8):
     letters = string.ascii_lowercase
     return ''.join(random.choice(letters) for i in range(stringLength))
 
+test = b'01234567'
+s_t = tree_encryption(test)
+print(s_t)
+d_t = tree_decryption(s_t)
+print(d_t)
 
 # test = b'\x9a)\xcdJ\xb6\x9a.\xd5'
 # w_t = walsh_transform(test)
@@ -154,16 +178,16 @@ def randomString(stringLength=8):
 # print(i_t)
 
 
-# for _ in range(100):
-#     x = randomString(random.randrange(1, 100))
-#     key = randomString(random.randrange(1, 100))
-#     y = encryption(x, key)
-#     decrypted = decryption(y, key)
-#     # print("M : ", x)
-#     # print("C : ", y)
-#     # print("D(C): ", decrypted)
-#     # decrypted = decrypted.strip()
-#     if x != decrypted : print(x, "!=" , decrypted)
-#     # assert(x == decrypted, "{}!={}".format(x, decrypted))
-# # print(type(decryption(y,key)))
+for _ in range(1000):
+    x = randomString(random.randrange(1, 100))
+    key = randomString(random.randrange(1, 100))
+    y = encryption(x, key)
+    decrypted = decryption(y, key)
+    # print("M : ", x)
+    # print("C : ", y)
+    # print("D(C): ", decrypted)
+    # decrypted = decrypted.strip()
+    if x != decrypted : print(x, "!=" , decrypted)
+    # assert(x == decrypted, "{}!={}".format(x, decrypted))
+# print(type(decryption(y,key)))
 
