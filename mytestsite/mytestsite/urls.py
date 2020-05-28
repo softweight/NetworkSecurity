@@ -16,10 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,re_path
 from . import views
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.contrib import staticfiles
 
 urlpatterns = [
     #path('', views.decrypt),
     re_path(r'k(.+)c(.+)/$', views.decrypt),
+    path('',views.encrypt),
+    path('api/qrcode',views.qrcode_making),
     path('api/decryptK',views.decryptK),
     path('api/decryptC',views.decryptC),
 ]
+
+urlpatterns += staticfiles_urlpatterns()
