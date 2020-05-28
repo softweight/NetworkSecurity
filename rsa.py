@@ -97,7 +97,7 @@ def PowerMod(a, b, c):
 # 加密 m^e ≡ c (mod N)
 arr = []
 m = "FUCKME"
-for i in len(m):
+for i in range(len(m)):
     arr.append(ord(m[i]))
 print(arr)
 c = PowerMod(m, e, N)

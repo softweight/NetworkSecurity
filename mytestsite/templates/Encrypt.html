@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %} 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <base href="/">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+<body>
+  {% load static %} 
+    <form>
+        Plaintext : <input type="text" id="pt">
+        Key : <input type="text" id="ky">
+        </form>
+    </br>
+    <button id="etp">Encrypt the plaintext!</button>
+    <p id="epp">{{ep_process}}</p>
+    <button id="etk">Encrypt the key!</button>
+    <p id="ekp">{{ek_process}}</p>
+    <button id="gtc">Generate the QR code!</button>
+    <div id="qr">
+    </div>
+    <script defer="true">
+    $('button#etp').click(evt => {
+      $.ajax({
+        method: "POST",
+        url: "/api/decryptK",
+        data: {
+          value : "{{e_k}}"
+        }
+      }).done(msg => {
+        msg.forEach(ele=>{
+            $('#dkp').append(`<h3>'${ele.ans}'</h3>`)
+          })
+      })
+    })
+    $('button#etk').click(evt => {
+      $.ajax({
+        method: "POST",
+        url: "/api/decryptC",
+        data: {
+          value : "{{c_text}}"
+        }
+      }).done(msg => {
+        msg.forEach(ele=>{
+            $('#dcp').append(`<h3>'${ele.ans}'</h3>`)
+          })
+      })
+    })
+    $('button#gtc').click(evt => {
+      $.ajax({
+        method: "POST",
+        url: "/api/qrcode",
+      }).done(msg => {
+        if(msg.result){
+            $('#qr').append(`<img src = {% static 'images/QRcode.png'%}>`)
+        }
+      })
+    })
+      </script>
+</body>
+</html>
