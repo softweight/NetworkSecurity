@@ -7,6 +7,7 @@ import base64
 import hashlib
 import random
 import string
+from . import rsa
 
 modular = 251
 mod_inv = 157
@@ -19,7 +20,9 @@ W_8 =  [1, 1, 1, 1, 1, 1, 1, 1,
         1, modular-1, 1, modular-1, modular-1, 1, modular-1, 1,
         1, modular-1, 1, modular-1, 1, modular-1, 1, modular-1]
 
+#QR code的C跟K
 forQR=[0]*2
+private=[]
 
 def walsh_transform(ipt):
     opt = bytearray()
@@ -43,19 +46,39 @@ def in_walsh_transform(ipt):
         opt.append(round_val)
     return opt
 
-def tree_encryption(x):
+def tree_encryption(x):    #inorder -> preorder
+
+    s_box = [7, 3, 1, 0, 2, 5, 4, 6]
+
+    y = bytearray([x[s_box[i]] for i in range(8)])
+
+    return y
+    
+def tree_decryption(x):    #preorder -> inorder
 
     s_box = [3, 2, 4, 1, 6, 5, 7, 0]
 
     y = bytearray([x[s_box[i]] for i in range(8)])
 
     return y
+
+def s_box(x):
+
+    _s_box = [107, 53, 242, 115, 3, 248, 236, 149, 38, 191, 221, 80, 164, 152, 240, 146, 147, 184, 135, 144, 1, 202, 28, 186, 130, 69, 90, 82, 114, 207, 133, 185, 168, 143, 40, 19, 208, 20, 44, 131, 181, 160, 96, 74, 198, 230, 102, 199, 241, 29, 222, 13, 177, 209, 137, 12, 204, 94, 225, 124, 170, 100, 58, 215, 163, 108, 37, 224, 121, 91, 173, 212, 233, 76, 99, 6, 93, 189, 113, 213, 234, 218, 55, 117, 157, 45, 162, 223, 17, 103, 71, 125, 140, 151, 14, 142, 159, 180, 97, 27, 8, 148, 134, 158, 106, 206, 214, 9, 161, 33, 77, 105, 87, 95, 235, 232, 228, 156, 138, 243, 79, 84, 227, 129, 10, 193, 195, 15, 122, 24, 34, 249, 245, 36, 126, 188, 219, 57, 11, 211, 25, 21, 109, 59, 226, 246, 41, 190, 200, 244, 83, 127, 104, 18, 56, 23, 155, 65, 250, 72, 46, 172, 128, 239, 210, 22, 139, 7, 169, 5, 39, 116, 73, 194, 187, 145, 171, 110, 42, 220, 112, 182, 150, 154, 98, 86, 64, 101, 88, 205, 75, 132, 92, 2, 120, 62, 153, 4, 81, 67, 196, 217, 231, 178, 78, 54, 52, 174, 85, 0, 50, 68, 89, 176, 167, 43, 238, 32, 70, 203, 229, 216, 179, 66, 51, 16, 183, 118, 31, 26, 201, 123, 111, 141, 237, 166, 30, 49, 119, 247, 192, 197, 47, 136, 48, 60, 63, 61, 175, 165, 35]
+
+    y = bytearray()
+    for i in x:
+        y.append(_s_box[i])
+
+    return y
+
+def inv_s_box(x):
+
+    _inv_s_box = [209, 20, 193, 4, 197, 169, 75, 167, 100, 107, 124, 138, 55, 51, 94, 127, 225, 88, 153, 35, 37, 141, 165, 155, 129, 140, 229, 99, 22, 49, 236, 228, 217, 109, 130, 250, 133, 66, 8, 170, 34, 146, 178, 215, 38, 85, 160, 242, 244, 237, 210, 224, 206, 1, 205, 82, 154, 137, 62, 143, 245, 247, 195, 246, 186, 157, 223, 199, 211, 25, 218, 90, 159, 172, 43, 190, 73, 110, 204, 120, 11, 198, 27, 150, 121, 208, 185, 112, 188, 212, 26, 69, 192, 76, 57, 113, 42, 98, 184, 74, 61, 187, 46, 89, 152, 111, 104, 0, 65, 142, 177, 232, 180, 78, 28, 3, 171, 83, 227, 238, 194, 68, 128, 231, 59, 91, 134, 151, 162, 123, 24, 39, 191, 30, 102, 18, 243, 54, 118, 166, 92, 233, 95, 33, 19, 175, 15, 16, 101, 7, 182, 93, 13, 196, 183, 156, 117, 84, 103, 96, 41, 108, 86, 64, 12, 249, 235, 214, 32, 168, 60, 176, 161, 70, 207, 248, 213, 52, 203, 222, 97, 40, 181, 226, 17, 31, 23, 174, 135, 77, 147, 9, 240, 125, 173, 126, 200, 241, 44, 47, 148, 230, 21, 219, 56, 189, 105, 29, 36, 53, 164, 139, 71, 79, 106, 63, 221, 201, 81, 136, 179, 10, 50, 87, 67, 58, 144, 122, 116, 220, 45, 202, 115, 72, 80, 114, 6, 234, 216, 163, 14, 48, 2, 119, 149, 132, 145, 239, 5, 131, 158]
     
-def tree_decryption(x):
-
-    s_box = [7, 3, 1, 0, 2, 5, 4, 6]
-
-    y = bytearray([x[s_box[i]] for i in range(8)])
+    y = bytearray()
+    for i in x:
+        y.append(_inv_s_box[i])
 
     return y
 
@@ -72,6 +95,8 @@ def block_encryption(m, k):
         m = bytearray([(m[i] + round_k[i]) % modular for i in range(8)])    #xor
 
         m = tree_encryption(m)
+
+        m = s_box(m)
         # print("after xor:", end='')
         # print(m)
         # print("=====end round=====")
@@ -85,8 +110,10 @@ def block_decryption(m, k):
         # print(round_k)
         # print("original m:", end='')
         # print(m)
+        m = inv_s_box(m)
+
         m = tree_decryption(m)
-        m = bytearray([(m[i] - round_k[i]) % modular for i in range(8)])
+        m = bytearray([(m[i] - round_k[i]) % modular for i in range(8)])    #xor
         # print("after xor:", end='')
         # print(m)
         m = in_walsh_transform(m)
@@ -115,19 +142,16 @@ def decrypt(request,c,k):
     print("c = "+c+"   "+"k = "+k)
     return render(request, 'Decrypt.html',{'c_text':c,'e_k':k})
 
-@csrf_exempt
-def decryptK(request):
-    if request.method == 'POST':
-        result=[]
-        result.append({'ans':"wow"})
-        return JsonResponse(result,safe=False, json_dumps_params={'ensure_ascii': False})
+
 @csrf_exempt
 def decryptC(request):
     if request.method == 'POST':
         opt = bytearray(b"")
         #M = bytearray(M.encode("UTF-8"))
         C = forQR[0]
-        K = forQR[1]
+        K = rsa.decryption(forQR[1],private[0],private[1])
+        print("I am K : ")
+        print(K)
         C = C.encode("UTF-8")
         C = base64.b64decode(C)
 
@@ -166,8 +190,8 @@ def decryptC(request):
 @csrf_exempt
 def qrcode_making(request):
     if request.method == 'POST':
-        k=forQR[0]
-        c=forQR[1]
+        k=forQR[1]
+        c=forQR[0]
         img = qr.make("http://192.168.43.161:8080/c"+str(c)+"k"+str(k))  # 輸入內容
         img.save("C:/Users/sheep/OneDrive/桌面/NS/NetworkSecurity/mytestsite/static/images/QRcode.png")
         return JsonResponse({'result':True})
@@ -177,9 +201,6 @@ def encryption(request):
     if request.method == 'POST':
         M = request.POST['plaintext']
         K = request.POST['key']
-        print(M)
-        print(K)
-        forQR[1]=K
         opt = bytearray(b"")
         M = bytearray(M.encode("UTF-8"))
 
@@ -209,34 +230,24 @@ def encryption(request):
             opt.extend(encrypted_block)
 
         opt = base64.b64encode(opt).decode("UTF-8")
+        print("i am ec")
         print(opt)
         forQR[0]=opt
         result = []
         result.append({'ans':opt})
         return JsonResponse(result,safe=False, json_dumps_params={'ensure_ascii': False})
 
+@csrf_exempt
+def encryptionK(request):
+    if request.method == 'POST':
+        #RSA的密文[0]、private key [1][0]d [1][1]N
+        K = request.POST['key']
+        enc = rsa.encryption(K)
+        forQR[1]=enc[0]
+        private.extend([enc[1][0],enc[1][1]])
+        result = []
+        print("I am EK")
+        print(enc[0])
+        result.append({'ans':enc[0]})
+        return JsonResponse(result,safe=False, json_dumps_params={'ensure_ascii': False})
 
-test = b'01234567'
-s_t = tree_encryption(test)
-print(s_t)
-d_t = tree_decryption(s_t)
-print(d_t)
-
-# test = b'\x9a)\xcdJ\xb6\x9a.\xd5'
-# w_t = walsh_transform(test)
-# i_t = in_walsh_transform(w_t)
-# print(i_t)
-
-
-# for _ in range(1000):
-#     x = randomString(random.randrange(1, 100))
-#     key = randomString(random.randrange(1, 100))
-#     y = encryption(x, key)
-#     decrypted = decryption(y, key)
-#     # print("M : ", x)
-#     # print("C : ", y)
-#     # print("D(C): ", decrypted)
-#     # decrypted = decrypted.strip()
-#     if x != decrypted : print(x, "!=" , decrypted)
-#     # assert(x == decrypted, "{}!={}".format(x, decrypted))
-# # print(type(decryption(y,key)))
