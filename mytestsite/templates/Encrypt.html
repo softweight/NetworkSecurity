@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <base href="/">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/en.css' %}">
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
     <title>Document</title>
 </head>
@@ -16,11 +17,17 @@
         Key : <input type="text" id="ky" value="{{key}}">
         </form>
     </br>
-    <button id="etp">Encrypt the plaintext!</button>
+    <div class="container">
+      <button class="button" style="vertical-align:middle" id='etp'><span>Encrypt the plaintext! &#8594;</span></button>
+    </div>
     <p id="epp">{{ep_process}}</p>
-    <button id="etk">Encrypt the key!</button>
+    <div class="container">
+      <button class="button" style="vertical-align:middle" id='etk'><span>Encrypt the key! &#8594;</span></button>
+    </div>
     <p id="ekp">{{ek_process}}</p>
-    <button id="gtc">Generate the QR code!</button>
+    <div class="container">
+      <button class="button" style="vertical-align:middle" id='gtc'><span>Generate the QR code! &#8594;</span></button>
+    </div>
     <div id="qr">
     </div>
     <script defer="true">
