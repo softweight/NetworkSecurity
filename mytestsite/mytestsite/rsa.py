@@ -95,23 +95,22 @@ def encryption(m):
     #print(chr(m[0]))
     #for i in range(len(m)):
     #    arr.append(ord(m[i]))
-    print(m)
     c=[]
     for i in m:
         c.append(PowerMod(i,e,N))
     #c = PowerMod(m, e, N)
     # c = (m**e) % N
     return c,privateKey
+
 def decryption(c,d,N):   
     # 解密 c^d ≡ m (mod N)
     #ansM = PowerMod(c, d, N)
     # ansM = (c**d) % N
-    print(c)
     #print(ansM)
     ans = bytearray()
     for i in c:
         ansM = PowerMod(i,d,N)
         # ansM = (c**d) % N
         ans.append(ansM)
-    print(ans.decode("UTF-8"))
+    ans = ans.decode('UTF-8')
     return ans
