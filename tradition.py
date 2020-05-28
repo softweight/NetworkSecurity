@@ -40,7 +40,7 @@ def in_walsh_transform(ipt):
 
 def tree_encryption(x):    #inorder -> preorder
 
-    s_box = [3, 2, 4, 1, 6, 5, 7, 0]
+    s_box = [7, 3, 1, 0, 2, 5, 4, 6]
 
     y = bytearray([x[s_box[i]] for i in range(8)])
 
@@ -48,7 +48,7 @@ def tree_encryption(x):    #inorder -> preorder
     
 def tree_decryption(x):    #preorder -> inorder
 
-    s_box = [7, 3, 1, 0, 2, 5, 4, 6]
+    s_box = [3, 2, 4, 1, 6, 5, 7, 0]
 
     y = bytearray([x[s_box[i]] for i in range(8)])
 
