@@ -14,22 +14,7 @@
     </br>
     <button id="dtc">Decrypt the ciphertext!</button>
     <p id="dcp">{{dc_process}}</p>
-    <button id="dtk">Decrypt the key!</button>
-    <p id="dkp">{{dk_process}}</p>
     <script defer="true">
-    $('button#dtk').click(evt => {
-      $.ajax({
-        method: "POST",
-        url: "/api/decryptK",
-        data: {
-          value : "{{e_k}}"
-        }
-      }).done(msg => {
-        msg.forEach(ele=>{
-            $('#dkp').append(`<h3>'${ele.ans}'</h3>`)
-          })
-      })
-    })
     $('button#dtc').click(evt => {
       $.ajax({
         method: "POST",

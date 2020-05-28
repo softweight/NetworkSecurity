@@ -41,11 +41,12 @@
       })
     })
     $('button#etk').click(evt => {
+      const ky = document.getElementById("ky")
       $.ajax({
         method: "POST",
-        url: "/api/decryptC",
+        url: "/api/encryptK",
         data: {
-          value : "{{c_text}}"
+          key : ky.value,
         }
       }).done(msg => {
         msg.forEach(ele=>{

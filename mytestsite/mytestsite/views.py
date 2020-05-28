@@ -7,6 +7,7 @@ import base64
 import hashlib
 import random
 import string
+from . import rsa
 
 modular = 251
 mod_inv = 157
@@ -19,7 +20,9 @@ W_8 =  [1, 1, 1, 1, 1, 1, 1, 1,
         1, modular-1, 1, modular-1, modular-1, 1, modular-1, 1,
         1, modular-1, 1, modular-1, 1, modular-1, 1, modular-1]
 
+#QR code的C跟K
 forQR=[0]*2
+private=[]
 
 def walsh_transform(ipt):
     opt = bytearray()
@@ -115,19 +118,14 @@ def decrypt(request,c,k):
     print("c = "+c+"   "+"k = "+k)
     return render(request, 'Decrypt.html',{'c_text':c,'e_k':k})
 
-@csrf_exempt
-def decryptK(request):
-    if request.method == 'POST':
-        result=[]
-        result.append({'ans':"wow"})
-        return JsonResponse(result,safe=False, json_dumps_params={'ensure_ascii': False})
+
 @csrf_exempt
 def decryptC(request):
     if request.method == 'POST':
         opt = bytearray(b"")
         #M = bytearray(M.encode("UTF-8"))
         C = forQR[0]
-        K = forQR[1]
+        K = str(rsa.decryption(forQR[1],private[0],private[1]))
         C = C.encode("UTF-8")
         C = base64.b64decode(C)
 
@@ -166,8 +164,8 @@ def decryptC(request):
 @csrf_exempt
 def qrcode_making(request):
     if request.method == 'POST':
-        k=forQR[0]
-        c=forQR[1]
+        k=forQR[1]
+        c=forQR[0]
         img = qr.make("http://192.168.43.161:8080/c"+str(c)+"k"+str(k))  # 輸入內容
         img.save("C:/Users/sheep/OneDrive/桌面/NS/NetworkSecurity/mytestsite/static/images/QRcode.png")
         return JsonResponse({'result':True})
@@ -177,9 +175,6 @@ def encryption(request):
     if request.method == 'POST':
         M = request.POST['plaintext']
         K = request.POST['key']
-        print(M)
-        print(K)
-        forQR[1]=K
         opt = bytearray(b"")
         M = bytearray(M.encode("UTF-8"))
 
@@ -215,12 +210,19 @@ def encryption(request):
         result.append({'ans':opt})
         return JsonResponse(result,safe=False, json_dumps_params={'ensure_ascii': False})
 
+@csrf_exempt
+def encryptionK(request):
+    if request.method == 'POST':
+        #RSA的密文[0]、private key [1][0]d [1][1]N
+        K = request.POST['key']
+        enc = rsa.encryption(K)
+        forQR[1]=enc[0]
+        private.extend([enc[1][0],enc[1][1]])
+        result = []
+        print(enc[0])
+        result.append({'ans':enc[0]})
+        return JsonResponse(result,safe=False, json_dumps_params={'ensure_ascii': False})
 
-test = b'01234567'
-s_t = tree_encryption(test)
-print(s_t)
-d_t = tree_decryption(s_t)
-print(d_t)
 
 # test = b'\x9a)\xcdJ\xb6\x9a.\xd5'
 # w_t = walsh_transform(test)
