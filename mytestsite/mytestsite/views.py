@@ -38,5 +38,5 @@ def qrcode_making(request):
         k=testk()
         c=testc()
         img = qr.make("http://192.168.43.161:8080/k="+str(k)+"c="+str(c))  # 輸入內容
-        img.save("C:/Users/sheep/OneDrive/桌面/NS/NetworkSecurity/mytestsite/static/images/QRcode.jpg")
+        img.save("C:/Users/sheep/OneDrive/桌面/NS/NetworkSecurity/mytestsite/static/images/QRcode.png")
         return JsonResponse({'result':True})
