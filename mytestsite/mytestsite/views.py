@@ -16,7 +16,7 @@ def testc():
     return c
 
 def decrypt(request,k,c):
-    print("k = "+k+"   "+"c = "+c)
+    print("c = "+c+"   "+"k = "+k)
     return render(request, 'Decrypt.html',{'c_text':c,'e_k':k})
 
 @csrf_exempt

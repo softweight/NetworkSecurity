@@ -12,10 +12,10 @@
     <h3>Ciphertext：{{c_text}}</br>
     <h3>Encrypted Key：{{e_k}}
     </br>
-    <button id="dtk">Decrypt the key!</button>
-    <p id="dkp">{{dk_process}}</p>
     <button id="dtc">Decrypt the ciphertext!</button>
     <p id="dcp">{{dc_process}}</p>
+    <button id="dtk">Decrypt the key!</button>
+    <p id="dkp">{{dk_process}}</p>
     <script defer="true">
     $('button#dtk').click(evt => {
       $.ajax({

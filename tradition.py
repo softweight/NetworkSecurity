@@ -35,11 +35,14 @@ def in_walsh_transform(ipt):
             round_val += (ipt[n] * W_8[m*8+n]) % modular
         round_val = (round_val * mod_inv) % modular
         opt.append(round_val)
-
     return opt
 
+<<<<<<< HEAD
 
 def tree_encryption(x):    #inorder -> preorder
+=======
+def tree_encryption(x):
+>>>>>>> b4424a0ee4893cb0879734c751ab8ef37108ae12
 
     s_box = [3, 2, 4, 1, 6, 5, 7, 0]
 
@@ -54,7 +57,6 @@ def tree_decryption(x):    #preorder -> inorder
     y = bytearray([x[s_box[i]] for i in range(8)])
 
     return y
-
 
 def block_encryption(m, k):
     for round_k in k:
