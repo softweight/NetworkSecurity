@@ -28,13 +28,13 @@ def miller_rabin(n, k):
     return True
 
 
-p = (random.randint(min,max)) * 2 + 1
+p = (random.randint(min,max)) * 6 + 1
 while miller_rabin(p,100)==False:
-    p = random.randint(min,max)*2+1
+    p = random.randint(min,max) * 6 + 1
 
-q = (random.randint(min,max)) * 2 + 1 
+q = (random.randint(min,max)) * 6 + 1 
 while miller_rabin(q,100)==False:
-    q = (random.randint(min,max)) * 2 + 1 
+    q = (random.randint(min,max)) * 6 + 1 
 
 N = p * q
 fn = (p-1)*(q-1)
