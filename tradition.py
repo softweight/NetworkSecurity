@@ -40,6 +40,68 @@ def in_walsh_transform(ipt):
 
     return opt
 
+class Node:
+
+    def __init__(self, data):
+
+        self.left = None
+        self.right = None
+        self.data = data
+
+    def inorder_insert(self, data):
+        if self.data:
+            if data < self.data:
+                if self.left is None:
+                    self.left = Node(data)
+                else:
+                    self.left.insert(data)
+            elif data > self.data:
+                if self.right is None:
+                    self.right = Node(data)
+                else:
+                    self.right.insert(data)
+        else:
+            self.data = data
+
+    def inorder_Traversal(self):
+        if self.left:
+            self.left.PrintTree()
+        print( self.data),
+        if self.right:
+            self.right.PrintTree()
+
+
+
+    def preorder_insert(self, data):
+        if self.data:
+            if data < self.data:
+                if self.left is None:
+                    self.left = Node(data)
+                else:
+                    self.left.insert(data)
+            elif data > self.data:
+                if self.right is None:
+                    self.right = Node(data)
+                else:
+                    self.right.insert(data)
+        else:
+            self.data = data
+
+    def preorder_Traversal(self):
+        if self.left:
+            self.left.PrintTree()
+        print( self.data),
+        if self.right:
+            self.right.PrintTree()
+
+
+def tree_encryption():
+
+    
+    
+    
+    pass
+
 
 def block_encryption(m, k):
     for round_k in k:
@@ -151,29 +213,42 @@ def randomString(stringLength=8):
     letters = string.ascii_lowercase
     return ''.join(random.choice(letters) for i in range(stringLength))
 
+
+def qrcode_making(k, c):
+    img = qr.make("http://192.168.43.161:8080/k="+k+"c="+c)  # 輸入內容
+    img.save("QR code.png")
+
+
+
+##################################### main ###########################################
+
+
 # test = b'\x9a)\xcdJ\xb6\x9a.\xd5'
 # w_t = walsh_transform(test)
 # i_t = in_walsh_transform(w_t)
 # print(i_t)
 
 
-for _ in range(10000):
-    x = randomString(random.randrange(1, 100))
-    key = randomString(random.randrange(1, 100))
-    y = encryption(x, key)
-    decrypted = decryption(y, key)
-    # print("M : ", x)
-    # print("C : ", y)
-    # print("D(C): ", decrypted)
-    # decrypted = decrypted.strip()
-    if x != decrypted : print(x, "!=" , decrypted)
-    # assert(x == decrypted, "{}!={}".format(x, decrypted))
-# print(type(decryption(y,key)))
+
+# for _ in range(100):
+#     x = randomString(random.randrange(1, 100))
+#     key = randomString(random.randrange(1, 100))
+#     y = encryption(x, key)
+#     decrypted = decryption(y, key)
+#     # print("M : ", x)
+#     # print("C : ", y)
+#     # print("D(C): ", decrypted)
+#     # decrypted = decrypted.strip()
+#     if x != decrypted : print(x, "!=" , decrypted)
+#     # assert(x == decrypted, "{}!={}".format(x, decrypted))
+# # print(type(decryption(y,key)))
 
 
-def qrcode_making(k, c):
-    img = qr.make("http://192.168.43.161:8080/k="+k+"c="+c)  # 輸入內容
-    img.save("QR code.png")
+# root = Node(12)
+# root.insert(6)
+# root.insert(14)
+# root.insert(3)
+# root.PrintTree()
 
 
 # qrcode_making(k,c)
