@@ -1,11 +1,8 @@
 import random
-import base64
-"""
-    todo : PowerMod /2問題 //2連小數有問題  , 英文+數字 
-"""
 
-
-# Miller-Rabin素數檢測演算法
+min = 10**64
+max = 10**127
+# Miller-Rabin質數檢測演算法
 def miller_rabin(n, k):
     if n == 2:
         return True
@@ -30,14 +27,14 @@ def miller_rabin(n, k):
             return False
     return True
 
+p = (random.randint(min,max)) * 2 + 1
 
-p = (random.randint(10**64,10**127)) * 2 + 1
 while miller_rabin(p,100)==False:
-    p = random.randint(10**64,10**127)*2+1
+    p = random.randint(min,max)*2+1
 
-q = (random.randint(10**64,10**127)) * 2 + 1 
+q = (random.randint(min,max)) * 2 + 1 
 while miller_rabin(q,100)==False:
-    q = (random.randint(10**64,10**127)) * 2 + 1 
+    q = (random.randint(min,max)) * 2 + 1 
 
 N = p * q
 fn = (p-1)*(q-1)
@@ -50,7 +47,7 @@ def computeGCD(x, y):
 
     return x
 
-# 用線性找最小的互質數
+# 用線性找最小的互質數e
 for i in range(2, fn-1):
     if computeGCD(i, fn) == 1:
         e = i
@@ -73,8 +70,6 @@ def ext_euclid(a, b):
     if old_s < 0:
         old_s += b
     return old_s
-
-
 d = ext_euclid(e, fn)
 print(d)
 
@@ -93,13 +88,6 @@ def PowerMod(a, b, c):
         b >>= 1
         base  = (base*base)%c
     return ans
-
-# def PowerMod(a, b, c):
-#     i = 1
-#     ans = 1
-#     for i in range(b):
-#         ans = (ans * a) % c
-#     return ans
 
 def encryption(m):
     # 加密 m^e ≡ c (mod N)
