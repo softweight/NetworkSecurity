@@ -31,9 +31,6 @@ def miller_rabin(n, k):
     return True
 
 
-
-
-
 p = (random.randint(10**64,10**127)) * 2 + 1
 while miller_rabin(p,100)==False:
     p = random.randint(10**64,10**127)*2+1
