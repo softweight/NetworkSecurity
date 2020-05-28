@@ -12,8 +12,8 @@
 <body>
   {% load static %} 
     <form>
-        Plaintext : <input type="text" id="pt">
-        Key : <input type="text" id="ky">
+        Plaintext : <input type="text" id="pt" value="{{plaintext}}"></br>
+        Key : <input type="text" id="ky" value="{{key}}">
         </form>
     </br>
     <button id="etp">Encrypt the plaintext!</button>
@@ -25,15 +25,18 @@
     </div>
     <script defer="true">
     $('button#etp').click(evt => {
+      const pt = document.getElementById("pt")
+      const ky = document.getElementById("ky")
       $.ajax({
         method: "POST",
-        url: "/api/decryptK",
+        url: "/api/encryptC",
         data: {
-          value : "{{e_k}}"
+          plaintext : pt.value,
+          key : ky.value,
         }
       }).done(msg => {
         msg.forEach(ele=>{
-            $('#dkp').append(`<h3>'${ele.ans}'</h3>`)
+            $('#epp').append(`<h3>'${ele.ans}'</h3>`)
           })
       })
     })
@@ -46,7 +49,7 @@
         }
       }).done(msg => {
         msg.forEach(ele=>{
-            $('#dcp').append(`<h3>'${ele.ans}'</h3>`)
+            $('#ekp').append(`<h3>'${ele.ans}'</h3>`)
           })
       })
     })

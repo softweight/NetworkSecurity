@@ -35,11 +35,10 @@ def in_walsh_transform(ipt):
             round_val += (ipt[n] * W_8[m*8+n]) % modular
         round_val = (round_val * mod_inv) % modular
         opt.append(round_val)
-
     return opt
 
 
-def tree_encryption(x):
+def tree_encryption(x):    #inorder -> preorder
 
     s_box = [3, 2, 4, 1, 6, 5, 7, 0]
 
@@ -47,7 +46,7 @@ def tree_encryption(x):
 
     return y
     
-def tree_decryption(x):
+def tree_decryption(x):    #preorder -> inorder
 
     s_box = [7, 3, 1, 0, 2, 5, 4, 6]
 
@@ -108,7 +107,7 @@ def block_decryption(m, k):
         m = inv_s_box(m)
 
         m = tree_decryption(m)
-        m = bytearray([(m[i] - round_k[i]) % modular for i in range(8)])
+        m = bytearray([(m[i] - round_k[i]) % modular for i in range(8)])    #xor
         # print("after xor:", end='')
         # print(m)
         m = in_walsh_transform(m)
@@ -194,11 +193,20 @@ def randomString(stringLength=8):
     letters = string.ascii_lowercase
     return ''.join(random.choice(letters) for i in range(stringLength))
 
-test = bytearray([i for i in range(modular)])
-s_t = s_box(test)
-print(s_t)
-d_t = inv_s_box(s_t)
-print(d_t)
+
+##################################### main ######################################################
+
+
+#test = bytearray([i for i in range(modular)])
+#s_t = s_box(test)
+#print(s_t)
+#d_t = inv_s_box(s_t)
+#print(d_t)
+# test = b'01234567'
+# s_t = tree_encryption(test)
+# print(s_t)
+# d_t = tree_decryption(s_t)
+# print(d_t)
 
 # test = b'\x9a)\xcdJ\xb6\x9a.\xd5'
 # w_t = walsh_transform(test)
@@ -218,13 +226,6 @@ for _ in range(1000):
     if x != decrypted : print(x, "!=" , decrypted)
     # assert(x == decrypted, "{}!={}".format(x, decrypted))
 # print(type(decryption(y,key)))
-
-
-# root = Node(12)
-# root.insert(6)
-# root.insert(14)
-# root.insert(3)
-# root.PrintTree()
 
 
 # qrcode_making(k,c)
