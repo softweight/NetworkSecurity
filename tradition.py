@@ -1,7 +1,5 @@
-import qrcode as qr
 import base64
 import hashlib
-from PIL import Image
 import random
 import string
 
@@ -169,13 +167,3 @@ for _ in range(10000):
     if x != decrypted : print(x, "!=" , decrypted)
     # assert(x == decrypted, "{}!={}".format(x, decrypted))
 # print(type(decryption(y,key)))
-
-
-def qrcode_making(k, c):
-    img = qr.make("http://192.168.43.161:8080/k="+k+"c="+c)  # 輸入內容
-    img.save("QR code.png")
-
-
-# qrcode_making(k,c)
-# im = Image.open('QR code.png')
-# im.show()
