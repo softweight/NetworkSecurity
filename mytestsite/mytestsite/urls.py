@@ -24,6 +24,8 @@ urlpatterns = [
     re_path(r'c(.+)k(.+)/$', views.decrypt),
     path('',views.encrypt),
     path('api/qrcode',views.qrcode_making),
+    #path('api/encryptK',views.encryptK),
+    path('api/encryptC',views.encryption),
     path('api/decryptK',views.decryptK),
     path('api/decryptC',views.decryptC),
 ]
