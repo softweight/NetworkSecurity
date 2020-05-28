@@ -21,7 +21,7 @@ from django.contrib import staticfiles
 
 urlpatterns = [
     #path('', views.decrypt),
-    re_path(r'k(.+)c(.+)/$', views.decrypt),
+    re_path(r'c(.+)k(.+)/$', views.decrypt),
     path('',views.encrypt),
     path('api/qrcode',views.qrcode_making),
     path('api/decryptK',views.decryptK),
