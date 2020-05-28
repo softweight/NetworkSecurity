@@ -37,12 +37,8 @@ def in_walsh_transform(ipt):
         opt.append(round_val)
     return opt
 
-<<<<<<< HEAD
 
 def tree_encryption(x):    #inorder -> preorder
-=======
-def tree_encryption(x):
->>>>>>> b4424a0ee4893cb0879734c751ab8ef37108ae12
 
     s_box = [3, 2, 4, 1, 6, 5, 7, 0]
 
