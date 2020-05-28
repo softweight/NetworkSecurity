@@ -43,6 +43,7 @@
         }
       }).done(msg => {
         msg.forEach(ele=>{
+            $('#epp').empty()
             $('#epp').append(`<h3>'${ele.ans}'</h3>`)
           })
       })
@@ -57,6 +58,7 @@
         }
       }).done(msg => {
         msg.forEach(ele=>{
+            $('#ekp').empty()
             $('#ekp').append(`<h3>'${ele.ans}'</h3>`)
           })
       })
@@ -67,6 +69,7 @@
         url: "/api/qrcode",
       }).done(msg => {
         if(msg.result){
+            $('#qr').empty()
             $('#qr').append(`<img src = {% static 'images/QRcode.png'%}>`)
         }
       })

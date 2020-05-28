@@ -19,6 +19,7 @@
     </div>
     <p id="dcp">{{dc_process}}</p>
     <script defer="true">
+    $('#dcp').remove(`<h3>'${ele.ans}'</h3>`)
     $('button#dtc').click(evt => {
       $.ajax({
         method: "POST",
@@ -28,6 +29,7 @@
         }
       }).done(msg => {
         msg.forEach(ele=>{
+            $('#dcp').empty()
             $('#dcp').append(`<h3>'${ele.ans}'</h3>`)
           })
       })
