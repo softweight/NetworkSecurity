@@ -38,60 +38,6 @@ def in_walsh_transform(ipt):
 
     return opt
 
-class Node:
-
-    def __init__(self, data):
-
-        self.left = None
-        self.right = None
-        self.data = data
-
-    def inorder_insert(self, data):
-        if self.data:
-            if data < self.data:
-                if self.left is None:
-                    self.left = Node(data)
-                else:
-                    self.left.inorder_insert(data)
-            elif data > self.data:
-                if self.right is None:
-                    self.right = Node(data)
-                else:
-                    self.right.inorder_insert(data)
-        else:
-            self.data = data
-
-    def inorder_Traversal(self):
-        if self.left:
-            self.left.inorder_Traversal()
-        print( self.data),
-        if self.right:
-            self.right.inorder_Traversal()
-
-
-
-    def preorder_insert(self, data):
-        if self.data:
-            if data < self.data:
-                if self.left is None:
-                    self.left = Node(data)
-                else:
-                    self.left.preorder_insert(data)
-            elif data > self.data:
-                if self.right is None:
-                    self.right = Node(data)
-                else:
-                    self.right.preorder_insert(data)
-        else:
-            self.data = data
-
-    def preorder_Traversal(self):
-        if self.left:
-            self.left.preorder_Traversal
-        print( self.data),
-        if self.right:
-            self.right.preorder_Traversal
-
 
 def tree_encryption():
 
@@ -111,7 +57,7 @@ def block_encryption(m, k):
         m = walsh_transform(m)
         # print("after walsh:", end='')
         # print(m)
-        m = bytearray([(m[i] + round_k[i]) % modular for i in range(8)])
+        m = bytearray([(m[i] + round_k[i]) % modular for i in range(8)])    #xor
         # print("after xor:", end='')
         # print(m)
         # print("=====end round=====")
