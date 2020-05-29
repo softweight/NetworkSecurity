@@ -24,6 +24,7 @@ W_8 =  [1, 1, 1, 1, 1, 1, 1, 1,
 #QR code的C跟K
 forQR=[0]*2
 private=[]
+public = []
 
 def walsh_transform(ipt):
     opt = bytearray()
@@ -193,7 +194,7 @@ def qrcode_making(request):
     if request.method == 'POST':
         k=forQR[1]
         c=forQR[0]
-        img = qr.make("http://192.168.43.161:8080/c"+str(c)+"k"+str(k))  # 輸入內容
+        img = qr.make("http://192.168.0.178:8080/c"+str(c)+"k"+str(k))  # 輸入內容
         image_path = os.path.abspath("static/images/QRcode.png")
         img.save(image_path)
         return JsonResponse({'result':True})
@@ -241,11 +242,13 @@ def encryption(request):
 def encryptionK(request):
     if request.method == 'POST':
         #RSA的密文[0]、private key [1][0]d [1][1]N
+        key_pair = rsa.gen_key()
+        public.extend(key_pair[0])
+        private.extend(key_pair[1])
+        
         K = request.POST['key']
-        enc = rsa.encryption(K)
+        enc = rsa.encryption(K, public[0], public[1])
         forQR[1]=enc
-        priv = rsa.gen_key()
-        private.extend([priv[0],priv[1]])
         result = []
         result.append({'ans':enc})
         return JsonResponse(result,safe=False, json_dumps_params={'ensure_ascii': False})

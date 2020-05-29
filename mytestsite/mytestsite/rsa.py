@@ -108,9 +108,9 @@ def gen_key():
         e = 0
 
         # 找互質數e
-        while True:
-        #for i in range(2**64, fn-1):
-            i = random.randrange(2**64, fn-1)
+        #while True:
+        for i in range(2, fn-1):
+            #i = random.randrange(2**64, fn-1)
             if computeGCD(i, fn) == 1:
                 e = i
                 break
