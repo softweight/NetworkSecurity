@@ -230,8 +230,6 @@ def encryption(request):
             opt.extend(encrypted_block)
 
         opt = base64.b64encode(opt).decode("UTF-8")
-        print("i am ec")
-        print(opt)
         forQR[0]=opt
         result = []
         result.append({'ans':opt})
@@ -243,11 +241,10 @@ def encryptionK(request):
         #RSA的密文[0]、private key [1][0]d [1][1]N
         K = request.POST['key']
         enc = rsa.encryption(K)
-        forQR[1]=enc[0]
-        private.extend([enc[1][0],enc[1][1]])
+        forQR[1]=enc
+        priv = rsa.gen_key()
+        private.extend([priv[0],priv[1]])
         result = []
-        print("I am EK")
-        print(enc[0])
-        result.append({'ans':enc[0]})
+        result.append({'ans':enc})
         return JsonResponse(result,safe=False, json_dumps_params={'ensure_ascii': False})
 
