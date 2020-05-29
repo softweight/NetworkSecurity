@@ -8,6 +8,7 @@ import hashlib
 import random
 import string
 from . import rsa
+import os
 
 modular = 251
 mod_inv = 157
@@ -193,7 +194,8 @@ def qrcode_making(request):
         k=forQR[1]
         c=forQR[0]
         img = qr.make("http://192.168.43.161:8080/c"+str(c)+"k"+str(k))  # 輸入內容
-        img.save("C:/Users/sheep/OneDrive/桌面/NS/NetworkSecurity/mytestsite/static/images/QRcode.png")
+        image_path = os.path.abspath("static/images/QRcode.png")
+        img.save(image_path)
         return JsonResponse({'result':True})
 
 @csrf_exempt
