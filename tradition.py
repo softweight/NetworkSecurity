@@ -214,7 +214,7 @@ def randomString(stringLength=8):
 # print(i_t)
 
 
-for _ in range(1000):
+for _ in range(100000):
     x = randomString(random.randrange(1, 100))
     key = randomString(random.randrange(1, 100))
     y = encryption(x, key)
