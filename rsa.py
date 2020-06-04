@@ -78,7 +78,7 @@ def ext_euclid(a, b):
     old_r = a
     r = b
     if b == 0:
-        return 1, 0, a
+        return 1
     else:
         while(r != 0):
             q = old_r//r
